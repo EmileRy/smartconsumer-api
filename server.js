@@ -1,45 +1,49 @@
-const express = require('express');
-const app = express();
-const port = 3000;
-const cors = require('cors');
+const http = require('http');
+const app = require('./app');
 
+const normalizePort = (val) => {
+  const port = parseInt(val, 10);
 
- const traitementCtrl = require("./controllers/traitement.js");//PREMIER TRAITEMENT
- traitementCtrl.similitudeFunc()
+  if (Number.isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
 
-//  const traitementPropertiesCtrl = require("./controllers/traitementFinal.js");//DEUXIEME TRAITEMENT
-//   traitementPropertiesCtrl.similitudePropertiesFunc();
-
-//Génération des fichiers 
-//Async await pour lancer le deuxième script 
-
-
-traitement = async () => {
-
-  // await traitementPropertiesCtrl.similitudePropertiesFunc();
-
+  return false;
 };
-traitement();
 
-//appel des routeurs
+const port = normalizePort(process.env.PORT || 3000);
+app.set('port', port);
 
-var dejaSimuleRouter = require('./routes/deja_simule');//Routeur ancienne sollicitation
-var objectifRouter = require('./routes/objectif');// Routeur nouvelle sollicitation
-var simulationRouter = require('./routes/simulation');//Routur ancienne simulation
-var similitudeSimulationRouter = require('./routes/similitudeSimulation');//Routeur liens bibliothèque
-var similitudeFinaleRouter = require('./routes/similitudeFinale');//Routeur similitude
-app.use(cors());
-app.use(express.static('public'));// Images
-app.use('/objectif', objectifRouter);//Nouvelle sollicitation
-app.use('/deja_simule', dejaSimuleRouter);//Ancienne sollicitation
-app.use('/simulation', simulationRouter);// Ancienne simulation
-app.use('/similitudeSimulation', similitudeSimulationRouter);// Liens bibliothèque
-app.use('/similitudeFinale', similitudeFinaleRouter);
+const server = http.createServer(app);
 
-// app.use('/similitude',similitudeRouter);
+const errorHandler = (error) => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  const address = server.address();
+  const bind = typeof address === 'string' ? `pipe${address}` : `port: ${port}`;
+  switch (error.code) {
+    case 'EACCESS':
+      console.log(`${bind} requires elevated privileges.`);
+      process.exit(1);
+    // eslint-disable-next-line no-fallthrough
+    case 'EADDRINUSE':
+      console.log(`${bind} is already in use.`);
+      process.exit(1);
+    // eslint-disable-next-line no-fallthrough
+    default:
+      throw error;
+  }
+};
 
+server.on('error', errorHandler);
+server.on('listening', () => {
+  const address = server.address();
+  const bind = typeof address === 'string' ? `pipe${address}` : `port${port}`;
+  console.log(`Listening on ${bind}`);
+});
 
-app.use(express.static('dist'));
-//route static pour View
-
-app.listen(port, () => console.log('app running'));
+server.listen(port);
