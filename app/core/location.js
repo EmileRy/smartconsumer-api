@@ -11,7 +11,7 @@ exports.getAppareils = (req, res) => {
   }
 
   const locationName = req.params.locationName;
-  console.log(locationName);
+  console.log("Request: " + locationName);
 
   const axios = require('axios');
 
@@ -30,7 +30,7 @@ exports.getAppareils = (req, res) => {
           });
         else {
           let usable = Core.getUsableDevices(data, weatherData, waterData);
-          
+
           res.send(usable);
         }
       });
