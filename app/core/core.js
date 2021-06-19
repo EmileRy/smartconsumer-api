@@ -42,7 +42,7 @@ const SmartConsumerCore = {
     },
 
     getWaterData(locationName){
-        fetch("https://hubeau.eaufrance.fr/api/vbeta/prelevements/chroniques?format=json&size=1&nom_commune=" + locationName)
+        fetch("https://hubeau.eaufrance.fr/api/v1/prelevements/chroniques?format=json&size=1&nom_commune=" + locationName)
         .then(response => response.text())
         .then(data => {
             let json = JSON.parse(data);

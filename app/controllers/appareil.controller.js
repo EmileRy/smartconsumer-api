@@ -102,3 +102,58 @@ exports.delete = (req, res) => {
     } else res.send({ message: `Appareil was deleted successfully!` });
   });
 };
+
+// Retrieve all Appareils nb uses from the database.
+exports.findAllNbUses = (req, res) => {
+  Appareil.getAllNbUses((err, data) => {
+    if (err)
+      res.status(500).send({
+        message: err.message || 'Some error occurred while retrieving Appareils.',
+      });
+    else res.send(data);
+  });
+};
+
+exports.addOneUse = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: 'Content can not be empty!',
+    });
+  }
+  Appareil.addUse(req.params.appareilId, (err, data) => {
+    if (err) {
+      if (err.kind === 'not_found') {
+        res.status(404).send({
+          message: `Not found Appareil with id ${req.params.appareilId}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: `Error updating Appareil with id ${req.params.appareilId}`,
+        });
+      }
+    } else res.send(data);
+  });
+};
+
+exports.removeOneUse = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: 'Content can not be empty!',
+    });
+  }
+  Appareil.removeUse(req.params.appareilId, (err, data) => {
+    if (err) {
+      if (err.kind === 'not_found') {
+        res.status(404).send({
+          message: `Not found Appareil with id ${req.params.appareilId}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: `Error updating Appareil with id ${req.params.appareilId}`,
+        });
+      }
+    } else res.send(data);
+  });
+};

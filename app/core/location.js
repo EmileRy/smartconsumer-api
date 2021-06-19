@@ -19,7 +19,7 @@ exports.getAppareils = (req, res) => {
   .then(weatherResponse => {
     const weatherData = weatherResponse.data;
 
-    axios.get("https://hubeau.eaufrance.fr/api/vbeta/prelevements/chroniques?format=json&size=1&nom_commune="+locationName)
+    axios.get("https://hubeau.eaufrance.fr/api/v1/prelevements/chroniques?format=json&size=1&nom_commune="+locationName)
     .then(waterResponse => {
       const waterData = waterResponse.data;
 
