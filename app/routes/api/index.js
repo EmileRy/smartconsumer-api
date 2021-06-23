@@ -10,8 +10,8 @@ router.get('/', (req, res) => res.json({ message: 'Welcome to SmartConsumer API'
 router.post('/appareils', appareil.create);
 router.get('/appareils', appareil.findAll);
 router.get('/appareils/nbuses', appareil.findAllNbUses);
-router.put('/appareils/:appareilId/adduse', appareil.addOneUse);
-router.put('/appareils/:appareilId/removeuse', appareil.removeOneUse);
+router.post('/appareils/:appareilId/adduse', appareil.addOneUse);
+router.post('/appareils/:appareilId/removeuse', appareil.removeOneUse);
 router.get('/appareils/:appareilId', appareil.findOne);
 router.put('/appareils/:appareilId', appareil.update);
 router.delete('/appareils/:appareilId', appareil.delete);
