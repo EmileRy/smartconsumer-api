@@ -17,6 +17,7 @@ Appareil.create = (newAppareil, result) => {
   );
 };
 
+
 Appareil.getAll = (result) => {
   sql.query('SELECT id,name,image_name,electricity_level,water_level FROM appareils', SqlHandler.getAll(result));
 };

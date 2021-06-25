@@ -29,14 +29,19 @@ exports.getAppareils = (req, res) => {
             message: err.message || 'Some error occurred while retrieving Appareils.',
           });
         else {
-          let usable = Core.getUsableDevices(data, weatherData, waterData);
-
+          let usable = Core.getUsableDevices(data, weatherData, waterData);     
           if(typeof req.body.source != "undefined"){
             usable.push({
               sources: {
                 weatherData: "http://api.openweathermap.org/data/2.5/weather?appid=YOUR_APP_ID_HERE&q=" + locationName,
-                waterData: "https://hubeau.eaufrance.fr/api/v1/prelevements/chroniques?format=json&size=1&nom_commune=" + locationName
-              }
+                waterData: "https://hubeau.eaufrance.fr/api/v1/prelevements/chroniques?format=json&size=1&nom_commune=" + locationName,
+                consumptionData : "http://localhost:3000/api/appareils/"
+              },
+            });
+          }
+          if(typeof req.body.additionalInfo != "undefined"){
+            usable.push({
+              additionalInfo: {},
             });
           }
 

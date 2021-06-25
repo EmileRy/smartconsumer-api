@@ -73,8 +73,6 @@ const SmartConsumerCore = {
     },
 
     getWaterAvailability(waterData){
-        if(waterData.data[0].libelle_qualification_volume == null)
-            return "Inconnue"
         return waterData.data[0].libelle_qualification_volume
     },
 
